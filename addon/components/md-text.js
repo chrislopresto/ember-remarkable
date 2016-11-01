@@ -58,7 +58,12 @@ export default Ember.Component.extend({
       ]);
     }
 
-    return md.render(this.get('text'));
+    var html = md.render(this.get('text'));
+    // HACK: Add hljs class for compatibility with latest highlight.js CSS
+    //       This should really be done with a `custom_fence` rule as
+    //       described here:
+    //       https://github.com/jonschlinkert/remarkable/issues/131
+    return html.replace(/<pre>/g, '<pre class="hljs">');
   }),
 
   parsedMarkdown: computed('parsedMarkdownUnsafe', function () {
